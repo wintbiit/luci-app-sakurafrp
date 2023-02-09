@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    //<![CDATA[
+    const refreshPath = '<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "refresh_tunnels")%>'
+    const restartPath = '<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "frpc_restart")%>'
+    const stopPath = '<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "frpc_stop")%>'
+    function refresh() {
+        XHR.get(refreshPath, null, null);
+    }
+
+    function restart() {
+        XHR.get(restartPath, null, null);
+    }
+
+    function stop() {
+        XHR.get(stopPath, null, null)
+    }
+    //]]>
+</script>
+<fieldset class="cbi-section" id="_log_fieldset">
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="refresh()" value="<%:Refresh Tunnels%>" />
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="restart()" value="<%:Restart Frpc%>" />
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="stop()" value="<%:Stop Frpc%>" />
+</fieldset>

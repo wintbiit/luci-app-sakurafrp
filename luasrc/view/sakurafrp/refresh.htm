@@ -1,0 +1,11 @@
+<script type="application/javascript">
+    const path = '<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "refresh_tunnels")%>'
+
+    function refresh() {
+        XHR.get(path, null, null);
+    }
+</script>
+
+<input class='cbi-button cbi-input-<%=self.inputstyle or "button" %>'
+       style="font-size: 100%;" type="button"
+       onclick="refresh()" />

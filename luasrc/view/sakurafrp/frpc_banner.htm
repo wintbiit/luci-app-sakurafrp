@@ -1,0 +1,12 @@
+<script type="application/javascript">
+    function luciGet(path) {
+        let url = `<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "${path}")%>`
+        return XHR.get(restartPath, null, null);
+    }
+</script>
+
+<div style="text-align: center">
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_stop')" value="<%:Stop Frpc%>" />
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_stop')" value="<%:Restart Frpc%>" />
+    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_force_stop')" value="<%:Force Stop Frpc%>" />
+</div>
