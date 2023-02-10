@@ -2,7 +2,7 @@ local api = require "luci.model.cbi.sakurafrp.api"
 local natfrpapi = require "luci.model.cbi.sakurafrp.natfrpapi"
 local prog = api.prog
 
-m = Map(prog, translate("Luci App for SakuraFrp"))
+m = Map(prog, "Luci Support for SakuraFrp")
 
 banner = m:section(NamedSection, "other")
 banner.template = prog .. "/index_banner"

@@ -14,11 +14,11 @@ tunnels.anonymous = true
 tunnels.sortable = true
 
 enable = tunnels:option(Flag, "enable", translate("Enable"))
-id = tunnels:option(DummyValue, "id", translate("Tunnel ID"))
+id = tunnels:option(DummyValue, "id", "ID")
 tunnel_name = tunnels:option(DummyValue, "tunnel_name", translate("Tunnel Name"))
-type = tunnels:option(DummyValue, "type", translate("Type"))
+type = tunnels:option(DummyValue, "type", translate("Tunnel Type"))
 _local = tunnels:option(DummyValue, "local", translate("Local"))
-remote = tunnels:option(DummyValue, "remote", translate("Node"))
+remote = tunnels:option(DummyValue, "remote", translate("Remote"))
 remote.rawhtml = true
 note = tunnels:option(DummyValue, "note", translate("Note"))
 advanced_config = tunnels:option(Button, "advanced_config", translate("Advanced Config"))
