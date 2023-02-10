@@ -74,7 +74,6 @@ define Package/luci-app-sakurafrp/install
 	$(INSTALL_DATA) ./luasrc/view/sakurafrp/index_banner.htm $(1)/usr/lib/lua/luci/view/sakurafrp/index_banner.htm
 	$(INSTALL_DATA) ./luasrc/view/sakurafrp/list_banner.htm $(1)/usr/lib/lua/luci/view/sakurafrp/list_banner.htm
 	$(INSTALL_DATA) ./luasrc/view/sakurafrp/log.htm $(1)/usr/lib/lua/luci/view/sakurafrp/log.htm
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/refresh.htm $(1)/usr/lib/lua/luci/view/sakurafrp/refresh.htm
 
 	$(INSTALL_DATA) ./root/usr/share/rpcd/acl.d/luci-app-sakurafrp.json $(1)/usr/share/rpcd/acl.d/luci-app-sakurafrp.json
 
