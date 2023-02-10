@@ -7,6 +7,7 @@ local prog = api.prog
 get_log = api.get_log
 clear_log = api.clear_log
 refresh_tunnels = natfrpapi.refresh_tunnels
+reset_plugin = api.reset_plugin
 
 frpc_install = api.frpc_install
 frpc_restart = api.frpc_restart
@@ -44,6 +45,9 @@ function index()
                 call("clear_log")).leaf = true
         entry({"admin", "services", prog, "refresh_tunnels"},
                 call("refresh_tunnels")).leaf = true
+        entry({"admin", "services", prog, "reset_plugin"},
+                call("reset_plugin")).leaf = true
+
         entry({"admin", "services", prog, "frpc_install"},
                 call("frpc_install")).leaf = true
         entry({"admin", "services", prog, "frpc_restart"},
@@ -56,6 +60,7 @@ function index()
                 call("frpc_status")).leaf = true
         entry({"admin", "services", prog, "frpc_uninstall"},
                 call("frpc_uninstall")).leaf = true
+
 
         entry({"admin", "services", prog, "frpc_fetch_config"},
                 call("frpc_fetch_config")).leaf = true

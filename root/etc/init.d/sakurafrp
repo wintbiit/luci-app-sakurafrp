@@ -14,6 +14,11 @@ LASTRUN_FILE=${PROFILE_DIR}/lastrun
 TOKEN=""
 TUNNELS=""
 
+output() {
+  time="$(date +%Y/%m/%d) $(date +%H:%M:%S)"
+  echo "$time $1"
+}
+
 set_lock() {
   if [ -f "$LOCK_FILE" ]; then
     exit 0
@@ -55,7 +60,7 @@ read_tunnel() {
 }
 
 start() {
-  echo "Starting sakurafrp..."
+  output "Starting sakurafrp..."
 	set_lock
 
 	config_load "sakurafrp"
@@ -76,20 +81,20 @@ start() {
 
   export LANG=zh_CN.UTF-8
   export LANGUAGE=zh_CN.UTF-8
-	echo "${CMD}"
+	output "Running ${CMD}"
 	$CMD
 
 	unset_lock
 }
 
 stop() {
-  echo "Stopping sakurafrp..."
+  output "Stopping sakurafrp..."
   kill -15 "$(pidof ${FRPC_FILE})"
 	unset_lock
 }
 
 restart() {
-  echo "Restarting..."
+  output "Restarting..."
 	stop
 	start
 }

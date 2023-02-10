@@ -6,6 +6,11 @@ if [ -f "$APP_FILE" ]; then
   exit 0
 fi
 
+output() {
+  time="$(date +%Y/%m/%d) $(date +%H:%M:%S)"
+  echo "${time} $1"
+}
+
 FRPC_i386="https://getfrp.sh/d/frpc_linux_386"
 FRPC_amd64="https://getfrp.sh/d/frpc_linux_amd64"
 FRPC_arm_garbage="https://getfrp.sh/d/frpc_linux_arm_garbage"
@@ -17,13 +22,13 @@ FRPC_mips64="https://getfrp.sh/d/frpc_linux_mips64"
 FRPC_mip64le="https://getfrp.sh/d/frpc_linux_mips64le"
 FRPC_riscv64="https://getfrp.sh/d/frpc_linux_riscv64"
 
-echo "Installing frpc...."
+output "Installing frpc...."
 
 arch=$(uname -m)
-echo "CPU arch is ${arch}"
+output "CPU arch is ${arch}"
 
 mips=$(echo -n I | hexdump -o | awk '{print substr($2,6,1); exit}')
-echo "mips is ${mips}"
+output "mips is ${mips}"
 
 url=""
 
@@ -51,9 +56,9 @@ elif [ "$arch" == "riscv64" ]; then
 fi
 
 # Download
-echo "Downloading frpc from ${url}"
+output "Downloading frpc from ${url}"
 mkdir $APP_DIR > /dev/null 2>&1
 wget -O $APP_FILE $url
 chmod o+x $APP_FILE
 
-echo "Frpc installed to ${APP_FILE}"
+output "Frpc installed to ${APP_FILE}"

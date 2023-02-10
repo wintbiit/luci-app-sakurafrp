@@ -28,14 +28,16 @@ function exec_print(cmd, ...)
 end
 
 function output_screen(msg, ...)
+    msg = string.format(msg, ...)
+    time = os.date("%Y-%m-%d %H:%M:%S");
     luci.http.prepare_content("text/plain;charset=utf-8")
-    luci.http.write(string.format(msg, ...))
+    luci.http.write(string.format("[%s] %s", time, msg))
 end
 
 function output_log(msg, ...)
-    return sys.exec("echo " ..
-        string.format(msg, ...) ..
-        " >> " .. log_file)
+    msg = string.format(msg, ...)
+    time = os.date("%Y/%m/%d %H:%M:%S");
+    return sys.exec("echo " .. string.format("%s %s", time, msg) .. " >> " .. log_file)
 end
 
 function url(...)
@@ -98,7 +100,7 @@ function frpc_version()
 end
 
 function frpc_restart()
-    output_log("Triggered restart")
+    output_log("Restarting Frpc...")
     grantExecute("/etc/init.d/sakurafrp")
     frpc_install()
     sys.call("/etc/init.d/sakurafrp restart >> " .. log_file)
@@ -106,11 +108,13 @@ end
 
 function frpc_stop()
     sys.call("/etc/init.d/sakurafrp stop > /dev/null 2>&1")
+    output_log("Stopped Frpc")
 end
 
 function frpc_force_stop()
     frpc_stop()
     sys.call(string.format("kill -9 $(pidof %s)", frpc_file))
+    output_log("Force stopped frpc")
 end
 
 function frpc_status()
@@ -134,4 +138,11 @@ end
 function frpc_uninstall()
     frpc_force_stop()
     exec("rm -rf %s %s %s", frpc_file, profile_dir .. "/lastrun", conf_file)
+    output_log("Frpc uninstalled")
+end
+
+function reset_plugin()
+    frpc_uninstall()
+    exec("rm -rf /etc/config/frpc")
+    output_log("Reset plugin.")
 end
