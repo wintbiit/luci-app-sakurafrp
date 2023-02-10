@@ -28,6 +28,12 @@ msgstr "Frpc 正在运行"
 msgid "Frpc Not Running"
 msgstr "Frpc 未运行"
 
+msgid "Tunnels"
+msgstr "隧道"
+
+msgid "Tunnel List"
+msgstr "隧道列表"
+
 msgid "Tunnel Config"
 msgstr "隧道配置"
 
@@ -54,3 +60,18 @@ msgstr "备注"
 
 msgid "Advanced Config"
 msgstr "高级设置"
+
+msgid "Refresh Tunnels"
+msgstr "刷新隧道列表"
+
+msgid "Restart Frpc"
+msgstr "重启Frpc"
+
+msgid "Stop Frpc"
+msgstr "关闭Frpc"
+
+msgid "Force Stop Frpc"
+msgstr "强制关闭Frpc"
+
+msgid "Manual Edit"
+msgstr "手动修改"
