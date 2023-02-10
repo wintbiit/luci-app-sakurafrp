@@ -143,6 +143,6 @@ end
 
 function reset_plugin()
     frpc_uninstall()
-    exec("rm -rf /etc/config/frpc")
+    exec("rm -rf /etc/config/sakurafrp")
     output_log("Reset plugin.")
 end
