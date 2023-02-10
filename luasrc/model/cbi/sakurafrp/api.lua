@@ -5,6 +5,7 @@ profile_dir = "/usr/share/sakurafrp"
 frpc_file = profile_dir .. "/frpc"
 log_file = "/tmp/log/sakurafrp.log"
 conf_file = profile_dir .. "/frpc.ini"
+install_file = profile_dir .. "/install.sh"
 http = require "luci.http"
 uci = require "luci.model.uci".cursor()
 sys = require "luci.sys"
@@ -86,15 +87,9 @@ function get_log()
     exec_print("[ -f '%s' ] && cat %s", log_file, log_file)
 end
 
-function run_frpc(...)
-    local command = frpc_file .. " --update"
-    command = command .. " " .. table.concat(..., " ")
-
-    exec_log(command)
-end
-
 function frpc_install()
-    exec_log("%s/install.sh", profile_dir)
+    grantExecute(install_file)
+    exec_log(install_file)
     grantExecute(frpc_file)
 end
 
@@ -120,7 +115,7 @@ end
 
 function frpc_status()
     local installed = exec("if [ -f %s ]; then echo 1; else echo 0; fi", frpc_file)
-    if (installed == "0") then
+    if (installed == 0) then
         return i18n.translate("Frpc Not Installed")
     end
 
