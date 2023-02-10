@@ -5,7 +5,8 @@ local prog = api.prog
 local m = Map(prog, translate("Tunnel List"))
 
 banner = m:section(NamedSection, "other")
-banner.template = prog .. "/list_banner"
+banner:append(Template(prog .. "/frpc_banner"))
+banner:append(Template(prog .. "/list_banner"))
 
 tunnels = m:section(TypedSection, "tunnel")
 

@@ -13,6 +13,7 @@ frpc_restart = api.frpc_restart
 frpc_stop = api.frpc_stop
 frpc_force_stop = api.frpc_force_stop
 frpc_fetch_config = api.frpc_fetch_config
+frpc_uninstall = api.frpc_uninstall
 function frpc_status()
         api.output_screen(api.frpc_status())
 end
@@ -20,22 +21,22 @@ end
 function index()
         prog = require("luci.model.cbi.sakurafrp.api").prog
         entry({"admin", "services", prog},
-                cbi(prog .. "/pages/index"), _("SakuraFrp"), 1).dependent = true
+                cbi(prog .. "/pages/index"), translate("SakuraFrp"), 1).dependent = true
 
         entry({"admin", "services", prog, "config"},
-                cbi(prog .. "/pages/index"), _("Config"), 1).leaf = true
+                cbi(prog .. "/pages/index"), translate("Config"), 1).leaf = true
 
         entry({"admin", "services", prog, "tunnel_list"},
-                cbi(prog .. "/pages/tunnel/list"), _("Tunnels"), 2).leaf = true
+                cbi(prog .. "/pages/tunnel/list"), translate("Tunnels"), 2).leaf = true
 
         entry({"admin", "services", prog, "tunnel_config"},
                 cbi(prog .. "/pages/tunnel/config")).leaf = true
 
         entry({"admin", "services", prog, "log"},
-                cbi(prog .. "/pages/log"), _("Log"), 3).leaf = true
+                cbi(prog .. "/pages/log"), translate("Log"), 3).leaf = true
 
         entry({"admin", "services", prog, "manual_edit"},
-                cbi(prog .. "/pages/manual_edit"), _("Manual Edit"), 4).leaf = true
+                cbi(prog .. "/pages/manual_edit"), translate("Manual Edit"), 4).leaf = true
 
         entry({"admin", "services", prog, "get_log"},
                 call("get_log")).leaf = true
@@ -53,6 +54,8 @@ function index()
                 call("frpc_force_stop")).leaf = true
         entry({"admin", "services", prog, "frpc_status"},
                 call("frpc_status")).leaf = true
+        entry({"admin", "services", prog, "frpc_uninstall"},
+                call("frpc_uninstall")).leaf = true
 
         entry({"admin", "services", prog, "frpc_fetch_config"},
                 call("frpc_fetch_config")).leaf = true

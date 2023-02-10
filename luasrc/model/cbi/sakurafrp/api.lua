@@ -110,13 +110,14 @@ end
 
 function frpc_force_stop()
     frpc_stop()
-    sys.call(string.format("kill -9 $(pidof %s)"), frpc_file)
+    sys.call(string.format("kill -9 $(pidof %s)", frpc_file))
 end
 
 function frpc_status()
     local installed = exec("if [ -f %s ]; then echo 1; else echo 0; fi", frpc_file)
-    if (tostring(installed) == "0") then
-        return i18n.translate("Frpc Not Installed")
+
+    if (tonumber(installed) == 0) then
+        return i18n.translate("Frpc Not Installed (Will be automatically installed when run.)")
     end
 
     local version = exec("echo -n $(%s -V)", frpc_file)
@@ -128,4 +129,9 @@ end
 
 function frpc_fetch_config()
     exec_print("[ -f '%s' ] && cat %s", conf_file, conf_file)
+end
+
+function frpc_uninstall()
+    frpc_force_stop()
+    exec("rm -rf %s %s", frpc_file, profile_dir .. "/lastrun", conf_file)
 end

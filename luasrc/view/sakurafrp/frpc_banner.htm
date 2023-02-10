@@ -1,12 +1,17 @@
 <script type="application/javascript">
-    function luciGet(path) {
+    function luciGet(path, refresh) {
         let url = `<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "${path}")%>`
-        return XHR.get(restartPath, null, null);
+        return XHR.get(url, null, function () {
+            if (refresh) {
+                location.reload()
+            }
+        });
     }
 </script>
 
 <div style="text-align: center">
-    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_stop')" value="<%:Stop Frpc%>" />
-    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_stop')" value="<%:Restart Frpc%>" />
-    <input class="btn cbi-button cbi-button-remove" type="button" onclick="luciGet('frpc_force_stop')" value="<%:Force Stop Frpc%>" />
+    <input class="btn cbi-button cbi-button-apply" type="button" onclick="luciGet('frpc_stop')" value="<%:Stop Frpc%>" />
+    <input class="btn cbi-button cbi-button-apply" type="button" onclick="luciGet('frpc_stop')" value="<%:Restart Frpc%>" />
+    <input class="btn cbi-button cbi-button-apply" type="button" onclick="luciGet('frpc_force_stop')" value="<%:Force Stop Frpc%>" />
+    <input class="btn cbi-button cbi-button-apply" type="button" onclick="luciGet('frpc_uninstall', true)" value="<%:Uninstall Frpc%>" />
 </div>

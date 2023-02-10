@@ -19,8 +19,8 @@ msgstr "手动修改frpc.ini"
 msgid "Please note. frpc.ini will be overwritten once you changed tunnel config and then run frpc!"
 msgstr "请注意，frpc.ini会在您修改隧道配置并且运行frpc后被覆写！"
 
-msgid "Frpc Not Installed"
-msgstr "Frpc 未安装"
+msgid "Frpc Not Installed (Will be automatically installed when run.)"
+msgstr "Frpc 未安装 (运行时会自动安装)"
 
 msgid "Frpc Running"
 msgstr "Frpc 正在运行"
@@ -75,3 +75,6 @@ msgstr "强制关闭Frpc"
 
 msgid "Manual Edit"
 msgstr "手动修改"
+
+msgid "Uninstall Frpc"
+msgstr "卸载Frpc"

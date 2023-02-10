@@ -36,8 +36,10 @@
     //]]>
 </script>
 <fieldset class="cbi-section" id="_log_fieldset">
-    <input class="btn cbi-button cbi-button-remove" type="button" onclick="clearLog()" value="<%:Clear Log%>" />
-    <input class="btn cbi-button cbi-button-remove" type="button" onclick="fetchLog()" value="<%:Refresh%>" />
+    <div style="text-align: center">
+        <input class="btn cbi-button cbi-button-save" type="button" onclick="clearLog()" value="<%:Clear Log%>" />
+        <input class="btn cbi-button cbi-button-save" type="button" onclick="fetchLog()" value="<%:Refresh%>" />
+    </div>
     <textarea id="log_textarea" class="cbi-input-textarea" style="width: 100%;margin-top: 10px;" data-update="change" rows="40" wrap="off" readonly="readonly"></textarea>
 </fieldset>
 
