@@ -63,11 +63,18 @@ end
 function uci_set_type_id(id, option, value)
     uci:set(prog, id, option, value)
     uci:save(prog)
+    uci:commit(prog)
 end
 
 function uci_create_type_id(id, type)
     uci:set(prog, id, type)
     uci:save(prog)
+end
+
+function uci_remove_all_type(type)
+    uci:delete_all(prog, type)
+    uci:save(prog)
+    uci:commit(prog)
 end
 
 function grantExecute(file)
@@ -143,6 +150,8 @@ end
 
 function reset_plugin()
     frpc_uninstall()
-    exec("rm -rf /etc/config/sakurafrp")
+    uci:unload(prog)
+    exec("cp %s/0_default_config %s", profile_dir, "/etc/config/sakurafrp")
+    uci:load(prog)
     output_log("Reset plugin.")
 end

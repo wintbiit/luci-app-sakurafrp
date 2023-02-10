@@ -97,13 +97,19 @@ function apply_tunnels(token)
     end
 end
 
+function remove_tunnels()
+    api.uci_remove_all_type("tunnel")
+end
+
 function refresh_tunnels()
     token = api.uci_get_type_id("config", "token", "")
     return refresh_tunnels_token(token)
 end
 
 function refresh_tunnels_token(token)
+    remove_tunnels()
     if token == nil or token == "" or type(token) ~= "string" then return end
+
     api.output_log("Refreshing with token %s.", token)
     if verify_token(token) then
         apply_nodes(token)

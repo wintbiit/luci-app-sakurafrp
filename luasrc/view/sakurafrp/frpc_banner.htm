@@ -22,7 +22,9 @@
     }
 
     function reset() {
-        XHR.get(resetPath, null, null);
+        XHR.get(resetPath, null, function (){
+            location.reload()
+        });
     }
 </script>
 
