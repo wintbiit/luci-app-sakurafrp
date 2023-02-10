@@ -41,7 +41,7 @@ define Package/luci-app-sakurafrp/install
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_DIR) $(1)/usr/share/rpcd
+	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
 	$(INSTALL_DIR) $(1)/usr/share/sakurafrp
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/sakurafrp
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages
@@ -51,24 +51,31 @@ define Package/luci-app-sakurafrp/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
 
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/sakurafrp.*.lmo $(1)/usr/lib/lua/luci/i18n/
-	$(INSTALL_CONF) ./root/etc/config/sakurafrp $(1)/etc/config/sakurafrp
 	$(INSTALL_BIN) ./root/etc/init.d/sakurafrp $(1)/etc/init.d/sakurafrp
+	$(INSTALL_BIN) ./root/etc/uci-defaults/luci-app-sakurafrp $(1)/etc/uci-defaults/luci-app-sakurafrp
 
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/api.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/api.lua
-	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/natfrpapi.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/natfrpapi.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/natfrpapi.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/natfrpapi.lua
 
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/index.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/index.lua
-	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/log.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/log.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/log.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/log.lua
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/manual_edit.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/manual_edit.lua
 
-	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/config.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/tunnel/config.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/config.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/tunnel/config.lua
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/list.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/tunnel/list.lua
 
 	$(INSTALL_DATA) ./luasrc/controller/sakurafrp.lua $(1)/usr/lib/lua/luci/controller/sakurafrp.lua
 
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/frpc_banner.lua $(1)/usr/lib/lua/luci/view/sakurafrp/frpc_banner.lua
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/index_banner.lua $(1)/usr/lib/lua/luci/view/sakurafrp/index_banner.lua
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/list_banner.lua $(1)/usr/lib/lua/luci/view/sakurafrp/list_banner.lua
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/log.lua $(1)/usr/lib/lua/luci/view/sakurafrp/log.lua
-	$(INSTALL_DATA) ./luasrc/view/sakurafrp/refresh.lua $(1)/usr/lib/lua/luci/view/sakurafrp/refresh.lua
+	$(INSTALL_DATA) ./luasrc/view/sakurafrp/frpc_banner.htm $(1)/usr/lib/lua/luci/view/sakurafrp/frpc_banner.htm
+	$(INSTALL_DATA) ./luasrc/view/sakurafrp/index_banner.htm $(1)/usr/lib/lua/luci/view/sakurafrp/index_banner.htm
+	$(INSTALL_DATA) ./luasrc/view/sakurafrp/list_banner.htm $(1)/usr/lib/lua/luci/view/sakurafrp/list_banner.htm
+	$(INSTALL_DATA) ./luasrc/view/sakurafrp/log.htm $(1)/usr/lib/lua/luci/view/sakurafrp/log.htm
+	$(INSTALL_DATA) ./luasrc/view/sakurafrp/refresh.htm $(1)/usr/lib/lua/luci/view/sakurafrp/refresh.htm
+
+	$(INSTALL_DATA) ./root/usr/share/rpcd/acl.d/luci-app-sakurafrp.json $(1)/usr/share/rpcd/acl.d/luci-app-sakurafrp.json
+
+	$(INSTALL_DATA) ./root/usr/share/sakurafrp/0_default_config $(1)/usr/share/sakurafrp/0_default_config
+	$(INSTALL_DATA) ./root/usr/share/sakurafrp/install.sh $(1)/usr/share/sakurafrp/install.sh
 endef
+
+$(eval $(call BuildPackage,luci-app-sakurafrp))
