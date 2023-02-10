@@ -78,3 +78,9 @@ msgstr "手动修改"
 
 msgid "Uninstall Frpc"
 msgstr "卸载Frpc"
+
+msgid "Clear Log"
+msgstr "清除日志"
+
+msgid "Refresh"
+msgstr "刷新"

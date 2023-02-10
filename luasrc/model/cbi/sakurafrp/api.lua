@@ -133,5 +133,5 @@ end
 
 function frpc_uninstall()
     frpc_force_stop()
-    exec("rm -rf %s %s", frpc_file, profile_dir .. "/lastrun", conf_file)
+    exec("rm -rf %s %s %s", frpc_file, profile_dir .. "/lastrun", conf_file)
 end
