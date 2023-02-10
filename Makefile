@@ -58,11 +58,11 @@ define Package/luci-app-sakurafrp/install
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/natfrpapi.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/natfrpapi.lua
 
 	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/index.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/index.lua
-    $(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/log.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/log.lua
-    $(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/manual_edit.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/manual_edit.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/log.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/log.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/manual_edit.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/manual_edit.lua
 
-    $(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/config.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/tunnel/config.lua
-    $(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/list.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/tunnel/list.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/config.lua $(1)/usr/lib/lua/luci/model/cbi/mentohust/pages/tunnel/config.lua
+	$(INSTALL_DATA) ./luasrc/model/cbi/sakurafrp/pages/tunnel/list.lua $(1)/usr/lib/lua/luci/model/cbi/sakurafrp/pages/tunnel/list.lua
 
 	$(INSTALL_DATA) ./luasrc/controller/sakurafrp.lua $(1)/usr/lib/lua/luci/controller/sakurafrp.lua
 
@@ -72,5 +72,3 @@ define Package/luci-app-sakurafrp/install
 	$(INSTALL_DATA) ./luasrc/view/sakurafrp/log.lua $(1)/usr/lib/lua/luci/view/sakurafrp/log.lua
 	$(INSTALL_DATA) ./luasrc/view/sakurafrp/refresh.lua $(1)/usr/lib/lua/luci/view/sakurafrp/refresh.lua
 endef
-
-$(eval $(call BuildPackage,luci-app-sakurafrp))
