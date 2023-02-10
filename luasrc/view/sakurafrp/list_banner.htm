@@ -5,6 +5,10 @@
     const stopPath = '<%=luci.dispatcher.build_url("admin", "services", "sakurafrp", "frpc_stop")%>'
     function refresh() {
         XHR.get(refreshPath, null, null);
+
+        setTimeout(function (){
+            location.reload()
+        }, 2000)
     }
 
     function restart() {

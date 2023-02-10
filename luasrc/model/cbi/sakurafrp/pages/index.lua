@@ -25,7 +25,6 @@ end
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
-    api.output_log("Test")
     api.frpc_restart()
     --luci.dispatcher.build_url("admin", "services", "sakurafrp", "frpc_restart")
 end

@@ -115,7 +115,7 @@ end
 
 function frpc_status()
     local installed = exec("if [ -f %s ]; then echo 1; else echo 0; fi", frpc_file)
-    if (installed == 0) then
+    if (tostring(installed) == "0") then
         return i18n.translate("Frpc Not Installed")
     end
 

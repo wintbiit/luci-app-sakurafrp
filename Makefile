@@ -6,6 +6,10 @@ PKG_NAME:=luci-app-sakurafrp
 PKG_VERSION=1.0.0
 PKG_RELEASE:=0
 
+LUCI_TITLE:=LuCI support for SakuraFrp
+LUCI_DEPENDS:=+curl+wget+jsonc
+LUCI_PKGARCH:=all
+
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
 include $(INCLUDE_DIR)/package.mk
