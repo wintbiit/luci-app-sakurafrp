@@ -11,13 +11,20 @@ uci = require "luci.model.uci".cursor()
 sys = require "luci.sys"
 i18n = require "luci.i18n"
 fs = require "nixio.fs"
+ini = require "luci.model.cbi.sakurafrp.ini_engine"
+
+function split(s,p)
+    local rt = {}
+    string.gsub(s,'[^'..p..']+',function(w) table.insert(rt,w) end);
+    return rt
+end
 
 function exec(cmd, ...)
     return sys.exec(string.format(cmd, ...))
 end
 
 function exec_log(cmd, ...)
-    sys.exec(string.format(cmd, ...) .. " >> " .. log_file)
+    sys.exec(string.format(cmd, ...) .. " >> " .. log_file .. " 2>&1")
 end
 
 function exec_print(cmd, ...)
@@ -31,13 +38,13 @@ function output_screen(msg, ...)
     msg = string.format(msg, ...)
     time = os.date("%Y-%m-%d %H:%M:%S");
     luci.http.prepare_content("text/plain;charset=utf-8")
-    luci.http.write(string.format("[%s] %s", time, msg))
+    luci.http.write(string.format("[%s] %s\n", time, msg))
 end
 
 function output_log(msg, ...)
     msg = string.format(msg, ...)
     time = os.date("%Y/%m/%d %H:%M:%S");
-    return sys.exec("echo " .. string.format("%s %s", time, msg) .. " >> " .. log_file)
+    return sys.exec("echo " .. string.format("%s %s", time, msg) .. " >> " .. log_file .. " 2>&1")
 end
 
 function url(...)
@@ -53,7 +60,7 @@ function uci_get_type(type, config, default)
 end
 
 function uci_get_type_id(id, config, default)
-    local value = uci:get(prog, id, config, default) or exec("echo -n $(uci -q get " .. prog .. "." .. id .. "." .. config .. ")")
+    local value = uci:get(prog, tostring(id), config, default) or exec("echo -n $(uci -q get " .. prog .. "." .. id .. "." .. config .. ")")
     if (value == nil or value == "") and (default and default ~= "") then
         value = default
     end
@@ -61,13 +68,22 @@ function uci_get_type_id(id, config, default)
 end
 
 function uci_set_type_id(id, option, value)
-    uci:set(prog, id, option, value)
+    uci:set(prog, tostring(id), option, value)
+    uci:save(prog)
+    uci:commit(prog)
+end
+
+function uci_set_type_id_batch(id, batch)
+    for k,v in pairs(batch) do
+        uci:set(prog, tostring(id), k, v)
+    end
+
     uci:save(prog)
     uci:commit(prog)
 end
 
 function uci_create_type_id(id, type)
-    uci:set(prog, id, type)
+    uci:set(prog, tostring(id), type)
     uci:save(prog)
 end
 
@@ -75,6 +91,14 @@ function uci_remove_all_type(type)
     uci:delete_all(prog, type)
     uci:save(prog)
     uci:commit(prog)
+end
+
+function uci_remove_id(id)
+    uci:delete(prog, tostring(id))
+end
+
+function uci_remove_option(id, option)
+    uci:delete(prog, tostring(id), option)
 end
 
 function grantExecute(file)
@@ -110,7 +134,7 @@ function frpc_restart()
     output_log("Restarting Frpc...")
     grantExecute("/etc/init.d/sakurafrp")
     frpc_install()
-    sys.call("/etc/init.d/sakurafrp restart >> " .. log_file)
+    sys.call("/etc/init.d/sakurafrp restart >> " .. log_file .. " 2>&1")
 end
 
 function frpc_stop()
@@ -154,4 +178,59 @@ function reset_plugin()
     exec("cp %s/0_default_config %s", profile_dir, "/etc/config/sakurafrp")
     uci:load(prog)
     output_log("Reset plugin.")
+end
+
+function cert_list()
+    certs_str = exec("ls %s | grep -e ^.*\.crt$", profile_dir)
+    list = {}
+    for _, v in pairs(split(certs_str, "\n")) do
+        table.insert(list, v)
+    end
+
+    return list
+end
+
+function get_available_ssl_domains()
+    local domains = {}
+    local keys_str = exec("ls %s | grep -e ^.*\.key$", profile_dir)
+
+    for _, cert in pairs(cert_list()) do
+        local domain = string.gsub(cert, "\.crt", "")
+        if string.find(keys_str, domain) then
+            table.insert(domains, domain)
+        end
+    end
+
+    return domains
+end
+
+function read_frpc_config()
+    conf = ini.load(conf_file)
+
+    --SakuraFrp Profile
+    sakura_keys = {
+        "sakura_mode", "use_recover", "persist_runid", "remote_control", "dynamic_key"
+    }
+    sakura_conf = {}
+
+    for _, v in pairs(sakura_keys) do
+        if (conf["common"] and conf["common"][v]) then
+            sakura_conf[v] = conf["common"][v]
+        end
+    end
+
+    uci_create_type_id("advanced_sakura")
+    uci_set_type_id_batch("advanced_sakura", sakura_conf)
+end
+
+function read_frpc_config_tunnel(id)
+
+end
+
+function write_frpc_config()
+
+end
+
+function write_frpc_config_tunnel(id)
+
 end

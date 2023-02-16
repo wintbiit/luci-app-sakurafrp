@@ -40,29 +40,32 @@ end
 
 function local_remote_wrapper(tunnel_data)
     local result = {
-        _local = "",
-        remote = ""
+        ["local_port"] = "",
+        ["local_host"] = "",
+        ["remote"] = ""
     }
     function map_port(port)
         if (port == "HTTP") then
-            return "80"
+            return "80", true
         elseif (port == "HTTPS") then
-            return "443"
+            return "443", true
         else
-            return port
+            return port, false
         end
     end
 
     local node = string.format("[%s]", nodeTable[tunnel_data.node])
     local type = tunnel_data.type
     local description = tunnel_data.description
+    local local_str = ""
 
     if (type == "wol") then
-        result._local = ""
-        result.remote = node
+        result["local_host"] = ""
+        result["local_port"] = ""
+        result["remote"] = node
     elseif (type == "etcp" or type == "eudp") then
-        result.remote = node
-        result._local = description
+        local_str = description
+        result["remote"] = node
     else
         description = string.gsub(description, " ", "")
         local position = string.find(description, "→")
@@ -70,30 +73,44 @@ function local_remote_wrapper(tunnel_data)
         local remote_port = string.sub(description, 1, position-1)
         local remote_host = "NotProvided"
         local remote_ip = "NotProvided"
-        remote_port = map_port(remote_port)
+        remote_port, http_tunnel = map_port(remote_port)
 
-        result.remote = string.format("%s<br>%s:%s<br>%s:%s", node, remote_host, remote_port, remote_ip, remote_port)
-        result._local = string.sub(description, position+3)
+        if http_tunnel then
+            result["remote"] = string.format("%s<br>%s:%s", node, remote_host, remote_port)
+        else
+            result["remote"] = string.format("%s<br>%s:%s<br>%s:%s", node, remote_host, remote_port, remote_ip, remote_port)
+        end
+
+        local_str = string.sub(description, position+3)
     end
 
-    return result, description
+    if (local_str ~= "") then
+        local sp_loc = string.find(local_str, ":")
+        result["local_host"] = string.sub(local_str, 1, sp_loc-1)
+        result["local_port"] = string.sub(local_str, sp_loc+1)
+    end
+
+    return result
 end
 
 function apply_tunnels(token)
     local data = fetch_tunnels(token)
     for _, v in pairs(data) do
-        local id = tostring(v.id)
         local wrapped = local_remote_wrapper(v)
+        api.output_log("Setting up tunnel{id=%s, name=%s}", v.id, v.name)
 
-        api.output_log("Setting up tunnel{id=%s, name=%s}", id, v.name)
+        local tunnel = {
+            ["id"] = v.id,
+            ["name"] = v.name,
+            ["note"] = v.note,
+            ["type"] = v.type,
+            ["local_host"] = wrapped["local_host"],
+            ["local_port"] = wrapped["local_port"],
+            ["remote"] = wrapped["remote"]
+        }
 
-        api.uci_create_type_id(id, "tunnel")
-        api.uci_set_type_id(id, "id", id)
-        api.uci_set_type_id(id, "tunnel_name", v.name)
-        api.uci_set_type_id(id, "note", v.note)
-        api.uci_set_type_id(id, "type", v.type)
-        api.uci_set_type_id(id, "local", wrapped._local)
-        api.uci_set_type_id(id, "remote", wrapped.remote)
+        api.uci_create_type_id(v.id, "tunnel")
+        api.uci_set_type_id_batch(v.id, tunnel)
     end
 end
 
